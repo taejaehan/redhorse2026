@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ZodiacFortune } from '../../types/fortune';
 
 const BASE_URL = 'https://fortune.137-5.com';
@@ -14,8 +15,10 @@ const isMobile = () => {
 };
 
 function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
+  const navigate = useNavigate();
+
   const handleShare = async () => {
-    const shareUrl = `${BASE_URL}/share/fortune/${zodiac.sign}/`;
+    const shareUrl = `${BASE_URL}/share/fortune/${zodiac.sign}/index.html`;
 
     // 모바일에서만 Web Share API 사용
     if (isMobile() && navigator.share && window.isSecureContext) {
@@ -125,6 +128,9 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
       {/* 하단 */}
       <div className="fortune-bottom">
         <div className="share-row">
+          <button className="other-zodiac-btn" onClick={() => navigate('/')}>
+            다른띠보기
+          </button>
           <button className="share-btn" onClick={handleShare}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <circle cx="18" cy="5" r="3"/>

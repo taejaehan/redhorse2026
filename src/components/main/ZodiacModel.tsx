@@ -27,6 +27,7 @@ interface ZodiacModelProps {
   scale?: number;
   onClick: (sign: ZodiacSign, worldPosition: THREE.Vector3) => void;
   disabled?: boolean;
+  hideLabel?: boolean;
 }
 
 function ZodiacModel({
@@ -36,6 +37,7 @@ function ZodiacModel({
   scale = 0.8,
   onClick,
   disabled = false,
+  hideLabel = false,
 }: ZodiacModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -98,28 +100,30 @@ function ZodiacModel({
       onPointerOut={handlePointerOut}
     >
       <primitive object={clonedScene} />
-      <Html
-        position={[0, -0.5, 0]}
-        center
-        distanceFactor={8}
-        style={{
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        <div
+      {!hideLabel && (
+        <Html
+          position={[0, -0.5, 0]}
+          center
+          distanceFactor={8}
           style={{
-            color: hovered ? '#ff6b6b' : '#ffffff',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            textShadow: '0 0 10px rgba(0,0,0,0.8)',
-            whiteSpace: 'nowrap',
-            transition: 'color 0.2s',
+            pointerEvents: 'none',
+            userSelect: 'none',
           }}
         >
-          {info.nameKo}띠
-        </div>
-      </Html>
+          <div
+            style={{
+              color: hovered ? '#ff6b6b' : '#ffffff',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              textShadow: '0 0 10px rgba(0,0,0,0.8)',
+              whiteSpace: 'nowrap',
+              transition: 'color 0.2s',
+            }}
+          >
+            {info.nameKo}띠
+          </div>
+        </Html>
+      )}
     </group>
   );
 }

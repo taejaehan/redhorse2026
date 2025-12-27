@@ -525,8 +525,28 @@ body,
 
 .share-row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: calc(12px * var(--fortune-scale));
+}
+
+.other-zodiac-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: calc(56px * var(--fortune-scale));
+  padding: calc(24px * var(--fortune-scale)) calc(40px * var(--fortune-scale));
+  color: rgba(255, 255, 255, 0.8);
+  font-size: calc(28px * var(--fortune-scale));
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.other-zodiac-btn:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.95);
 }
 
 .share-btn {
@@ -536,16 +556,16 @@ body,
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  width: calc(56px * var(--fortune-scale));
-  height: calc(56px * var(--fortune-scale));
+  width: calc(112px * var(--fortune-scale));
+  height: calc(112px * var(--fortune-scale));
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .share-btn svg {
-  width: calc(28px * var(--fortune-scale));
-  height: calc(28px * var(--fortune-scale));
+  width: calc(56px * var(--fortune-scale));
+  height: calc(56px * var(--fortune-scale));
 }
 
 .share-btn:active {

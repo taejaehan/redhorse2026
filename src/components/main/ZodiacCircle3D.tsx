@@ -10,10 +10,11 @@ interface ZodiacCircle3DProps {
   onSelect: (sign: ZodiacSign, worldPosition: THREE.Vector3) => void;
   rotationSpeed?: number;
   isTransitioning?: boolean;
+  hideLabels?: boolean;
 }
 
 const ZodiacCircle3D = forwardRef<THREE.Group, ZodiacCircle3DProps>(
-  ({ onSelect, rotationSpeed = 0.15, isTransitioning = false }, ref) => {
+  ({ onSelect, rotationSpeed = 0.15, isTransitioning = false, hideLabels = false }, ref) => {
     const groupRef = useRef<THREE.Group>(null);
 
     // 외부에서 groupRef 접근 가능하도록
@@ -46,6 +47,7 @@ const ZodiacCircle3D = forwardRef<THREE.Group, ZodiacCircle3DProps>(
               rotation={[0, rotationY, 0]}
               onClick={onSelect}
               disabled={isTransitioning}
+              hideLabel={hideLabels}
             />
           );
         })}

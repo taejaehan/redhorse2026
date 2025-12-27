@@ -24,6 +24,7 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
   const [selectedSign, setSelectedSign] = useState<ZodiacSign | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<THREE.Vector3 | null>(null);
   const [showBubble, setShowBubble] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const handleSelect = useCallback((sign: ZodiacSign, worldPosition: THREE.Vector3) => {
     setSelectedSign(sign);
@@ -74,10 +75,33 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       </Helmet>
       <LoadingScreen />
 
+      {/* 좌측 상단 info 버튼 */}
+      <button
+        onClick={() => setShowInfo(true)}
+        style={{
+          position: 'fixed',
+          top: '15px',
+          left: '15px',
+          zIndex: 200,
+          background: 'rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: '50%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          cursor: 'pointer',
+        }}
+      >
+        <span style={{ fontSize: '20px', fontWeight: 'bold', fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>i</span>
+      </button>
+
       {/* 우측 상단 공유 버튼 */}
       <button
         onClick={async () => {
-          const shareUrl = `${BASE_URL}/share/`;
+          const shareUrl = `${BASE_URL}/share/index.html`;
           const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             || ('ontouchstart' in window);
 
@@ -166,6 +190,7 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
           selectedPosition={selectedPosition}
           onTransitionComplete={handleTransitionComplete}
           onHorseClick={handleHorseClick}
+          hideLabels={showInfo}
         />
       </Canvas>
 
@@ -175,6 +200,69 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
           <p>2026년은 붉은 말의 해!</p>
           <p className="sub">주변 동물을 선택하면<br />운세를 볼 수 있어요</p>
           <div className="bubble-tail" />
+        </div>
+      )}
+
+      {/* Info 다이얼로그 */}
+      {showInfo && (
+        <div
+          className="info-dialog-overlay"
+          onClick={() => setShowInfo(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: '#000008',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div
+            className="info-dialog"
+            onClick={() => setShowInfo(false)}
+            style={{
+              background: '#000008',
+              borderRadius: '16px',
+              padding: '24px',
+              maxWidth: '500px',
+              width: '100%',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              color: 'white',
+              position: 'relative',
+            }}
+          >
+            <button
+              onClick={() => setShowInfo(false)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                background: 'transparent',
+                border: 'none',
+                color: 'white',
+                fontSize: '24px',
+                cursor: 'pointer',
+                padding: '4px',
+              }}
+            >
+              ×
+            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+              <img src="/info/channels4_profile (1).jpg" alt="profile" style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover' }} />
+              <h2 style={{ margin: 0, fontSize: '2rem' }}>코딩의세계</h2>
+              <p style={{ margin: 0, fontSize: '1.2rem', opacity: 0.8 }}>with</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img src="/info/vacro.png" alt="Vacro" style={{ height: '40px', objectFit: 'contain' }} />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

@@ -463,7 +463,7 @@ function GroupPhotoPage() {
         {/* 공유 버튼 */}
         <button
           onClick={async () => {
-            const shareUrl = `${BASE_URL}/share/group-photo/`;
+            const shareUrl = `${BASE_URL}/share/group-photo/index.html`;
             const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
               || ('ontouchstart' in window);
 

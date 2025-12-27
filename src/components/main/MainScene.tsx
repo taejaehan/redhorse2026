@@ -18,9 +18,10 @@ interface MainSceneProps {
   selectedPosition: THREE.Vector3 | null;
   onTransitionComplete: () => void;
   onHorseClick?: () => void;
+  hideLabels?: boolean;
 }
 
-function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionComplete, onHorseClick }: MainSceneProps) {
+function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionComplete, onHorseClick, hideLabels = false }: MainSceneProps) {
   const { camera } = useThree();
   const controlsRef = useRef<any>(null);
   const zodiacSpotlightRef = useRef<any>(null);
@@ -190,6 +191,7 @@ function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionCompl
           ref={circleRef}
           onSelect={onSelect}
           isTransitioning={!!selectedSign}
+          hideLabels={hideLabels}
         />
       </Suspense>
 
