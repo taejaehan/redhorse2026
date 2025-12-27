@@ -8,12 +8,14 @@ interface CenterHorseModelProps {
   scale?: number;
   position?: [number, number, number];
   rotationSpeed?: number;
+  onClick?: () => void;
 }
 
 function CenterHorseModel({
   scale = 1.5,
   position = [0, 0, 0],
   rotationSpeed = 0.3,
+  onClick,
 }: CenterHorseModelProps) {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -44,7 +46,7 @@ function CenterHorseModel({
   });
 
   return (
-    <group ref={groupRef} position={position} scale={scale}>
+    <group ref={groupRef} position={position} scale={scale} onClick={onClick}>
       <primitive object={clonedScene} />
     </group>
   );

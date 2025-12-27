@@ -9,7 +9,16 @@
       "Bash(npm run build:*)",
       "Bash(ls:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: 2026 병오년 운세 사이트 초기 버전\n\n- 메인 페이지: 3D 12간지 원형 배치 + 중앙 말 스포트라이트\n- 동물 선택 트랜지션: 스포트라이트 + 카메라 줌인 애니메이션\n- 운세 페이지: 3D 모델 + HTML 오버레이 \\(오행, 행운색/숫자, 궁합, 조언\\)\n- 가족사진 페이지: 12간지 엇갈림 배치\n- 반응형: CSS 변수 스케일링, iOS safe-area 대응\n- 모바일: 터치 회전/줌 지원\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create:*)",
+      "Bash(aws s3 ls:*)",
+      "Bash(aws route53 change-resource-record-sets:*)",
+      "Bash(aws cloudfront get-distribution:*)",
+      "Bash(aws s3 sync:*)",
+      "Bash(aws cloudfront create-invalidation:*)",
+      "Bash(aws cloudfront list-distributions:*)",
+      "Bash(aws s3 cp:*)"
     ]
   }
 }

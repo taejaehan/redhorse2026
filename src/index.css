@@ -5,7 +5,8 @@
 }
 
 :root {
-  --fortune-scale: 1; /* 1080x1920 기준 */
+  --fortune-scale: 1;
+  /* 1080x1920 기준 */
 }
 
 html,
@@ -16,6 +17,100 @@ body,
   overflow: hidden;
   background: #0d0d1a;
   font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a0a0a 0%, #0d0d1a 50%, #1a0a0a 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loading-image {
+  width: 200px;
+  height: auto;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.loading-title {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff6b6b, #ffc107, #ff6b6b);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.loading-subtitle {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-bar-container {
+  width: 250px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.loading-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b6b, #ffc107);
+  border-radius: 3px;
+  transition: width 0.3s ease-out;
+}
+
+.loading-percent {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
 }
 
 .app {
@@ -60,6 +155,24 @@ body,
   color: #aaaaaa;
 }
 
+.main-header .group-photo-link {
+  margin-top: 12px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  cursor: pointer;
+  pointer-events: auto;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.main-header .group-photo-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .main-footer {
   position: absolute;
   bottom: 40px;
@@ -75,12 +188,78 @@ body,
   color: #666666;
 }
 
+.main-footer .control-hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* 말 클릭 말풍선 */
+.horse-bubble {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1a2e;
+  padding: 16px 24px;
+  border-radius: 16px;
+  text-align: center;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: bubblePop 0.3s ease-out;
+}
+
+.horse-bubble p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff6b6b;
+}
+
+.horse-bubble p.sub {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+  line-height: 1.4;
+}
+
+.horse-bubble .bubble-tail {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid rgba(255, 255, 255, 0.95);
+}
+
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -120%) scale(1);
+  }
+}
+
 /* Fortune Page */
 .fortune-page {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
+  /* dvh = 실제 보이는 영역 */
   overflow: hidden;
+  /* 모바일 터치/선택 방지 */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: pan-y;
 }
 
 .fortune-page canvas {
@@ -110,6 +289,7 @@ body,
 .fortune-top {
   background: none;
   padding: calc(20px * var(--fortune-scale)) calc(20px * var(--fortune-scale)) calc(20px * var(--fortune-scale));
+  pointer-events: auto;
 }
 
 /* 헤더 행 (띠 + 오행 같은 줄) */
@@ -152,11 +332,11 @@ body,
   font-size: calc(64px * var(--fortune-scale));
   font-weight: 800;
   color: #fff;
-  text-shadow: 0 4px 30px rgba(255,107,107,0.6);
+  text-shadow: 0 4px 30px rgba(255, 107, 107, 0.6);
 }
 
 /* 오행 관계 (우측 정렬) */
-.element-center {
+.element-right {
   position: absolute;
   right: 0;
   display: flex;
@@ -164,54 +344,54 @@ body,
   gap: calc(12px * var(--fortune-scale));
 }
 
-.element-center .element-year {
+.element-right .element-year {
   font-size: calc(48px * var(--fortune-scale));
   font-weight: 700;
   color: #ff6b6b;
 }
 
-.element-center .element-char {
+.element-right .element-char {
   font-size: calc(72px * var(--fortune-scale));
   font-weight: 800;
 }
 
-.element-center .element-char.fire {
+.element-right .element-char.fire {
   color: #ff6b6b;
-  text-shadow: 0 0 40px rgba(255,107,107,0.8);
+  text-shadow: 0 0 40px rgba(255, 107, 107, 0.8);
 }
 
-.element-center .element-char.earth {
+.element-right .element-char.earth {
   color: #d4a574;
-  text-shadow: 0 0 40px rgba(212,165,116,0.8);
+  text-shadow: 0 0 40px rgba(212, 165, 116, 0.8);
 }
 
-.element-center .element-char.water {
+.element-right .element-char.water {
   color: #4fc3f7;
-  text-shadow: 0 0 40px rgba(79,195,247,0.8);
+  text-shadow: 0 0 40px rgba(79, 195, 247, 0.8);
 }
 
-.element-center .element-char.wood {
+.element-right .element-char.wood {
   color: #81c784;
-  text-shadow: 0 0 40px rgba(129,199,132,0.8);
+  text-shadow: 0 0 40px rgba(129, 199, 132, 0.8);
 }
 
-.element-center .element-char.metal {
+.element-right .element-char.metal {
   color: #e0e0e0;
-  text-shadow: 0 0 40px rgba(224,224,224,0.8);
+  text-shadow: 0 0 40px rgba(224, 224, 224, 0.8);
 }
 
-.element-center .element-ko {
+.element-right .element-ko {
   font-size: calc(32px * var(--fortune-scale));
   font-weight: 500;
   opacity: 0.7;
 }
 
-.element-center .element-arrow {
+.element-right .element-arrow {
   font-size: calc(56px * var(--fortune-scale));
   color: #888;
 }
 
-.element-center .element-result {
+.element-right .element-result {
   font-size: calc(40px * var(--fortune-scale));
   font-weight: 800;
   padding: calc(8px * var(--fortune-scale)) calc(20px * var(--fortune-scale));
@@ -219,14 +399,14 @@ body,
   margin-left: calc(8px * var(--fortune-scale));
 }
 
-.element-center .element-result.good {
+.element-right .element-result.good {
   color: #7fff7f;
-  background: rgba(100,255,150,0.15);
+  background: rgba(100, 255, 150, 0.15);
 }
 
-.element-center .element-result.bad {
+.element-right .element-result.bad {
   color: #ff7f7f;
-  background: rgba(255,100,100,0.15);
+  background: rgba(255, 100, 100, 0.15);
 }
 
 /* 오행 설명 */
@@ -236,7 +416,7 @@ body,
   text-align: center;
   margin-bottom: calc(24px * var(--fortune-scale));
   padding: calc(20px * var(--fortune-scale)) calc(24px * var(--fortune-scale));
-  background: linear-gradient(90deg, transparent 0%, rgba(255,107,107,0.15) 20%, rgba(255,180,100,0.15) 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 107, 107, 0.15) 20%, rgba(255, 180, 100, 0.15) 80%, transparent 100%);
   border-radius: calc(16px * var(--fortune-scale));
   letter-spacing: 1px;
 }
@@ -299,15 +479,15 @@ body,
 .info-label {
   font-size: calc(28px * var(--fortune-scale));
   font-weight: 600;
-  color: #888;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .info-item.good .info-label {
-  color: #7fff7f;
+  color: rgba(127, 255, 127, 0.6);
 }
 
 .info-item.bad .info-label {
-  color: #ff7f7f;
+  color: rgba(255, 127, 127, 0.6);
 }
 
 .info-value {
@@ -330,13 +510,44 @@ body,
   width: calc(52px * var(--fortune-scale));
   height: calc(52px * var(--fortune-scale));
   border-radius: 50%;
-  border: calc(3px * var(--fortune-scale)) solid rgba(255,255,255,0.3);
+  border: calc(3px * var(--fortune-scale)) solid rgba(255, 255, 255, 0.3);
 }
 
 /* 하단 영역 */
 .fortune-bottom {
-  background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 70%, transparent 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 70%, transparent 100%);
   padding: calc(50px * var(--fortune-scale)) calc(20px * var(--fortune-scale)) calc(24px * var(--fortune-scale));
+  pointer-events: auto;
+}
+
+.share-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: calc(12px * var(--fortune-scale));
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: calc(56px * var(--fortune-scale));
+  height: calc(56px * var(--fortune-scale));
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.share-btn svg {
+  width: calc(28px * var(--fortune-scale));
+  height: calc(28px * var(--fortune-scale));
+}
+
+.share-btn:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.95);
 }
 
 .advice-row {
@@ -384,11 +595,34 @@ body,
 }
 
 .main-quote {
+  position: relative;
   text-align: center;
   padding: calc(36px * var(--fortune-scale)) calc(24px * var(--fortune-scale));
-  background: linear-gradient(135deg, rgba(255,107,107,0.25) 0%, rgba(255,180,100,0.25) 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.25) 0%, rgba(255, 180, 100, 0.25) 100%);
   border-radius: calc(24px * var(--fortune-scale));
-  border: calc(2px * var(--fortune-scale)) solid rgba(255,150,100,0.3);
+  border: calc(2px * var(--fortune-scale)) solid rgba(255, 150, 100, 0.3);
+}
+
+.main-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: calc(5px * var(--fortune-scale));
+  left: calc(24px * var(--fortune-scale));
+  font-size: calc(100px * var(--fortune-scale));
+  color: rgba(255, 150, 100, 0.5);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.main-quote::after {
+  content: "\201D";
+  position: absolute;
+  bottom: calc(-30px * var(--fortune-scale));
+  right: calc(24px * var(--fortune-scale));
+  font-size: calc(100px * var(--fortune-scale));
+  color: rgba(255, 150, 100, 0.5);
+  font-family: Georgia, serif;
+  line-height: 1;
 }
 
 .main-quote p {
@@ -875,8 +1109,16 @@ body,
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0.3; }
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0.3;
+  }
 }
 
 /* Back Button */
@@ -929,8 +1171,13 @@ body,
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ===== 반응형 미디어 쿼리 ===== */
@@ -979,40 +1226,43 @@ body,
   }
 
   .fortune-top {
-    background: none;
+    /* background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%); */
     padding: 15px;
-    padding-top: calc(env(safe-area-inset-top, 10px) + 15px);
     pointer-events: auto;
   }
 
   .fortune-bottom {
-    margin-top: 35vh; /* 3D 모델 보이는 공간 */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background: none;
-    padding: 20px 15px;
-    padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px));
+    padding: 10px;
     pointer-events: auto;
   }
 
   /* 헤더 간소화 */
   .header-row {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
     min-height: auto;
     gap: 8px;
   }
 
   .zodiac-left {
-    width: 100%;
+    flex-shrink: 0;
   }
 
-  .element-center {
-    position: relative;
-    width: 100%;
+  .element-right {
+    display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    justify-content: flex-end;
+    gap: 4px;
   }
 
   .element-description {
-    font-size: calc(32px * var(--fortune-scale));
+    font-size: calc(48px * var(--fortune-scale));
     padding: 10px 12px;
     margin-bottom: 12px;
   }
@@ -1061,7 +1311,7 @@ body,
   .fortune-overlay {
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-start;
     padding: 20px;
     gap: 15px;
     overflow-y: auto;
@@ -1091,7 +1341,7 @@ body,
     gap: 10px;
   }
 
-  .element-center {
+  .element-right {
     position: relative;
     flex-wrap: wrap;
     justify-content: flex-start;

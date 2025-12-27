@@ -17,9 +17,10 @@ interface MainSceneProps {
   selectedSign: ZodiacSign | null;
   selectedPosition: THREE.Vector3 | null;
   onTransitionComplete: () => void;
+  onHorseClick?: () => void;
 }
 
-function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionComplete }: MainSceneProps) {
+function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionComplete, onHorseClick }: MainSceneProps) {
   const { camera } = useThree();
   const controlsRef = useRef<any>(null);
   const zodiacSpotlightRef = useRef<any>(null);
@@ -180,7 +181,7 @@ function MainScene({ onSelect, selectedSign, selectedPosition, onTransitionCompl
 
       {/* 중앙 말 모델 */}
       <Suspense fallback={null}>
-        <CenterHorseModel scale={1.5} rotationSpeed={0.3} position={[0, 0.2, 0]} />
+        <CenterHorseModel scale={1.5} rotationSpeed={0.3} position={[0, 0.2, 0]} onClick={onHorseClick} />
       </Suspense>
 
       {/* 12간지 원형 배치 */}

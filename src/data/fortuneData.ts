@@ -14,7 +14,7 @@ export const fortuneData: FortuneData = {
       years: [1960, 1972, 1984, 1996, 2008, 2020],
       element: '水',
       elementRelation: '상극',
-      elementDescription: '불이 물을 극함 = 에너지 소모, 집중 관리',
+      elementDescription: '에너지 소모, 집중 관리',
       luckyColors: [
         { name: '네이비', hex: '#1a237e' },
         { name: '블랙', hex: '#212121' },
@@ -42,7 +42,7 @@ export const fortuneData: FortuneData = {
       years: [1961, 1973, 1985, 1997, 2009, 2021],
       element: '土',
       elementRelation: '상생',
-      elementDescription: '火생土 = 기반 강화, 자산 축적',
+      elementDescription: '기반 강화, 자산 축적',
       luckyColors: [
         { name: '베이지', hex: '#d4b896' },
         { name: '브라운', hex: '#a67c52' },
@@ -70,7 +70,7 @@ export const fortuneData: FortuneData = {
       years: [1962, 1974, 1986, 1998, 2010, 2022],
       element: '木',
       elementRelation: '소모',
-      elementDescription: '木생火 = 과열 주의, 체력 관리',
+      elementDescription: '과열 주의, 체력 관리',
       luckyColors: [
         { name: '그린', hex: '#4caf50' },
         { name: '오렌지', hex: '#ff9800' },
@@ -98,7 +98,7 @@ export const fortuneData: FortuneData = {
       years: [1963, 1975, 1987, 1999, 2011, 2023],
       element: '木',
       elementRelation: '소모',
-      elementDescription: '木생火 = 아이디어 많으나 소진 주의',
+      elementDescription: '아이디어 많으나 소진 주의',
       luckyColors: [
         { name: '파스텔그린', hex: '#a5d6a7' },
         { name: '화이트', hex: '#ffffff' },
@@ -126,7 +126,7 @@ export const fortuneData: FortuneData = {
       years: [1964, 1976, 1988, 2000, 2012, 2024],
       element: '土',
       elementRelation: '상생',
-      elementDescription: '火생土 = 정리하면 다시 단단해짐',
+      elementDescription: '정리하면 다시 단단해짐',
       luckyColors: [
         { name: '골드', hex: '#ffd700' },
         { name: '브라운', hex: '#8d6e63' },
@@ -154,7 +154,7 @@ export const fortuneData: FortuneData = {
       years: [1965, 1977, 1989, 2001, 2013, 2025],
       element: '火',
       elementRelation: '동류',
-      elementDescription: '火동류 = 직관, 집중력 상승',
+      elementDescription: '직관, 집중력 상승',
       luckyColors: [
         { name: '다크레드', hex: '#b71c1c' },
         { name: '블랙', hex: '#212121' },
@@ -182,7 +182,7 @@ export const fortuneData: FortuneData = {
       years: [1966, 1978, 1990, 2002, 2014, 2026],
       element: '火',
       elementRelation: '극대화',
-      elementDescription: '火극대화 = 성취 크지만 번아웃 주의',
+      elementDescription: '성취 크지만 번아웃 주의',
       luckyColors: [
         { name: '레드', hex: '#f44336' },
         { name: '오렌지', hex: '#ff9800' },
@@ -211,7 +211,7 @@ export const fortuneData: FortuneData = {
       years: [1967, 1979, 1991, 2003, 2015, 2027],
       element: '土',
       elementRelation: '상생',
-      elementDescription: '火생土 = 주변 도움으로 안정',
+      elementDescription: '주변 도움으로 안정',
       luckyColors: [
         { name: '크림', hex: '#fffdd0' },
         { name: '핑크', hex: '#f48fb1' },
@@ -239,7 +239,7 @@ export const fortuneData: FortuneData = {
       years: [1968, 1980, 1992, 2004, 2016, 2028],
       element: '金',
       elementRelation: '상극',
-      elementDescription: '火극金 = 선택과 집중 필요',
+      elementDescription: '선택과 집중 필요',
       luckyColors: [
         { name: '화이트', hex: '#ffffff' },
         { name: '실버', hex: '#bdbdbd' },
@@ -267,7 +267,7 @@ export const fortuneData: FortuneData = {
       years: [1969, 1981, 1993, 2005, 2017, 2029],
       element: '金',
       elementRelation: '상극',
-      elementDescription: '火극金 = 압박 속 단련',
+      elementDescription: '압박 속 단련',
       luckyColors: [
         { name: '화이트', hex: '#ffffff' },
         { name: '레드', hex: '#e53935' },
@@ -295,7 +295,7 @@ export const fortuneData: FortuneData = {
       years: [1970, 1982, 1994, 2006, 2018, 2030],
       element: '土',
       elementRelation: '상생',
-      elementDescription: '火생土 = 부담이 자산으로 전환',
+      elementDescription: '부담이 자산으로 전환',
       luckyColors: [
         { name: '브라운', hex: '#795548' },
         { name: '네이비', hex: '#1a237e' },
@@ -323,7 +323,7 @@ export const fortuneData: FortuneData = {
       years: [1971, 1983, 1995, 2007, 2019, 2031],
       element: '水',
       elementRelation: '상극',
-      elementDescription: '火극水 = 감정 관리 중요',
+      elementDescription: '감정 관리 중요',
       luckyColors: [
         { name: '블루', hex: '#2196f3' },
         { name: '아이보리', hex: '#fffff0' },

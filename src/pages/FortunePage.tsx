@@ -1,10 +1,30 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
+import { Helmet } from 'react-helmet-async';
 import TurntableModel from '../components/TurntableModel';
 import FortuneOverlay from '../components/fortune/FortuneOverlay';
-import { ZodiacFortune } from '../types/fortune';
+import FortuneLoadingScreen from '../components/FortuneLoadingScreen';
+import { ZodiacFortune, ZodiacSign } from '../types/fortune';
 import * as THREE from 'three';
+
+const BASE_URL = 'https://fortune.137-5.com';
+
+// 띠별 이미지 매핑
+const IMAGE_MAP: Record<ZodiacSign, string> = {
+  rat: '/12animal/mouse.png',
+  ox: '/12animal/cow.png',
+  tiger: '/12animal/tiger.png',
+  rabbit: '/12animal/rabbit.png',
+  dragon: '/12animal/dragon.png',
+  snake: '/12animal/snake.png',
+  horse: '/12animal/horse.png',
+  sheep: '/12animal/sheep.png',
+  monkey: '/12animal/monkey.png',
+  rooster: '/12animal/chicken.png',
+  dog: '/12animal/dog.png',
+  pig: '/12animal/pig.png',
+};
 
 // 카메라가 오브젝트 주위를 회전 (Z-up)
 function CameraRig({ target, radius, enabled }: { target: [number, number, number]; radius: number; enabled: boolean }) {
@@ -66,7 +86,7 @@ function FortunePage({ zodiac, onBack }: FortunePageProps) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'r' || e.key === 'ㄱ') {
+      if (e.key === 'd' || e.key === 'D' || e.key === 'ㅇ') {
         setDebugMode((prev) => !prev);
       }
       if (e.key === '1') {
@@ -80,8 +100,26 @@ function FortunePage({ zodiac, onBack }: FortunePageProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const ogImage = IMAGE_MAP[zodiac.sign] || '/redhorse.png';
+  const pageTitle = `2026 병오년 ${zodiac.nameKo}띠 운세`;
+  const pageDescription = `${zodiac.emoji} ${zodiac.nameKo}띠 2026년 신년운세 - ${zodiac.quote[0]} ${zodiac.quote[1]}`;
+
   return (
     <div className="fortune-page">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={`${BASE_URL}${ogImage}`} />
+        <meta property="og:url" content={`${BASE_URL}/fortune/${zodiac.sign}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={`${BASE_URL}${ogImage}`} />
+      </Helmet>
+      <FortuneLoadingScreen zodiac={zodiac} />
       {debugMode && <div className="debug-indicator">DEBUG MODE</div>}
       <Canvas
         camera={{ position: [0, 5, 3.5], fov: 50, up: [0, 0, 1], near: 0.01, far: 1000 }}
