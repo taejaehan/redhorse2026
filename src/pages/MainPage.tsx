@@ -162,8 +162,8 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       </button>
 
       <div className="main-header">
-        <h1>2026 병오년</h1>
-        <p>붉은 말의 해</p>
+        <h1>2026년 운세</h1>
+        <p>丙午年(붉은 말의해)</p>
         <button className="group-photo-link" onClick={() => navigate('/group-photo')}>
           축하메세지 보기
         </button>

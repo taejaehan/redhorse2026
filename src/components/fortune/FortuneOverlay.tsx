@@ -143,11 +143,11 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
         </div>
         <div className="advice-row">
           <div className="advice-item dont">
-            <span className="icon">✕</span>
+            <span className="icon">조심할것:</span>
             <span className="text">{zodiac.adviceDont}</span>
           </div>
           <div className="advice-item do">
-            <span className="icon">○</span>
+            <span className="icon">해야할것:</span>
             <span className="text">{zodiac.adviceDo}</span>
           </div>
         </div>
