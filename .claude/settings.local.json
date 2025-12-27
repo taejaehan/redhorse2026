@@ -18,7 +18,9 @@
       "Bash(aws s3 sync:*)",
       "Bash(aws cloudfront create-invalidation:*)",
       "Bash(aws cloudfront list-distributions:*)",
-      "Bash(aws s3 cp:*)"
+      "Bash(aws s3 cp:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

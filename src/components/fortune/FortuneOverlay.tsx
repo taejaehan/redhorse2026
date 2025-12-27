@@ -1,5 +1,7 @@
 import { ZodiacFortune } from '../../types/fortune';
 
+const BASE_URL = 'https://fortune.137-5.com';
+
 interface FortuneOverlayProps {
   zodiac: ZodiacFortune;
   onBack?: () => void;
@@ -13,15 +15,15 @@ const isMobile = () => {
 
 function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
   const handleShare = async () => {
-    const url = window.location.href;
+    const shareUrl = `${BASE_URL}/share/fortune/${zodiac.sign}/`;
 
     // 모바일에서만 Web Share API 사용
     if (isMobile() && navigator.share && window.isSecureContext) {
       try {
         await navigator.share({
           title: `2026 병오년 ${zodiac.nameKo}띠 운세`,
-          text: `${zodiac.nameKo}띠 2026년 운세: ${zodiac.quote[0]} ${zodiac.quote[1]}`,
-          url,
+          text: `${zodiac.nameKo}띠 2026년 운세를 확인하세요!`,
+          url: shareUrl,
         });
         return;
       } catch (err) {
@@ -32,17 +34,17 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
     // 클립보드 복사
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(shareUrl);
       } else {
         const textarea = document.createElement('textarea');
-        textarea.value = url;
+        textarea.value = shareUrl;
         textarea.readOnly = true;
         textarea.style.position = 'fixed';
         textarea.style.top = '-9999px';
         textarea.style.left = '-9999px';
         document.body.appendChild(textarea);
         textarea.select();
-        textarea.setSelectionRange(0, url.length);
+        textarea.setSelectionRange(0, shareUrl.length);
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }

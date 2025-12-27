@@ -77,7 +77,7 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       {/* 우측 상단 공유 버튼 */}
       <button
         onClick={async () => {
-          const url = window.location.href;
+          const shareUrl = `${BASE_URL}/share/`;
           const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             || ('ontouchstart' in window);
 
@@ -86,7 +86,7 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
               await navigator.share({
                 title: '2026 병오년 운세',
                 text: '2026년 붉은 말의 해! 나의 신년운세를 확인해보세요!',
-                url,
+                url: shareUrl,
               });
               return;
             } catch (err) { /* fallback */ }
@@ -94,10 +94,10 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
 
           try {
             if (navigator.clipboard && window.isSecureContext) {
-              await navigator.clipboard.writeText(url);
+              await navigator.clipboard.writeText(shareUrl);
             } else {
               const textarea = document.createElement('textarea');
-              textarea.value = url;
+              textarea.value = shareUrl;
               textarea.readOnly = true;
               textarea.style.position = 'fixed';
               textarea.style.top = '-9999px';
