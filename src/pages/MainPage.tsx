@@ -6,6 +6,8 @@ import * as THREE from 'three';
 import MainScene from '../components/main/MainScene';
 import LoadingScreen from '../components/LoadingScreen';
 import { ZodiacSign } from '../types/fortune';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from '../data/translations';
 
 const BASE_URL = 'https://fortune.137-5.com';
 
@@ -21,6 +23,9 @@ interface MainPageProps {
 
 function MainPage({ onSelectZodiac }: MainPageProps) {
   const navigate = useNavigate();
+  const { lang, basePath, isEnglish } = useLanguage();
+  const { t } = useTranslation(lang);
+
   const [selectedSign, setSelectedSign] = useState<ZodiacSign | null>(null);
   const [selectedPosition, setSelectedPosition] = useState<THREE.Vector3 | null>(null);
   const [showBubble, setShowBubble] = useState(false);
@@ -29,19 +34,17 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
   const handleSelect = useCallback((sign: ZodiacSign, worldPosition: THREE.Vector3) => {
     setSelectedSign(sign);
     setSelectedPosition(worldPosition);
-    setShowBubble(false); // 동물 선택 시 말풍선 숨김
+    setShowBubble(false);
   }, []);
 
   const handleHorseClick = useCallback(() => {
-    setShowBubble((prev) => !prev); // 토글
+    setShowBubble((prev) => !prev);
   }, []);
 
-  // 빈 곳 클릭 시 말풍선 숨김
   const handleMissed = useCallback(() => {
     setShowBubble(false);
   }, []);
 
-  // 말풍선 자동 숨김 (5초 후)
   useEffect(() => {
     if (showBubble) {
       const timer = setTimeout(() => setShowBubble(false), 5000);
@@ -49,7 +52,6 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
     }
   }, [showBubble]);
 
-  // 모바일 여부
   const mobile = useMemo(() => isMobile(), []);
 
   const handleTransitionComplete = useCallback(() => {
@@ -58,19 +60,24 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
     }
   }, [selectedSign, onSelectZodiac]);
 
+  // 공유 URL (영어 버전이면 /share/en/)
+  const shareUrl = isEnglish
+    ? `${BASE_URL}/share/en/index.html`
+    : `${BASE_URL}/share/index.html`;
+
   return (
     <div className="main-page">
       <Helmet>
-        <title>2026 병오년 운세 - 붉은 말의 해</title>
-        <meta name="description" content="2026년 병오년 붉은 말의 해! 12간지 띠별 신년운세를 확인하세요." />
+        <title>{t('siteTitle')}</title>
+        <meta name="description" content={t('siteDescription')} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="2026 병오년 운세 - 붉은 말의 해" />
-        <meta property="og:description" content="2026년 병오년 붉은 말의 해! 12간지 띠별 신년운세를 확인하세요." />
+        <meta property="og:title" content={t('siteTitle')} />
+        <meta property="og:description" content={t('siteDescription')} />
         <meta property="og:image" content={`${BASE_URL}/redhorse.png`} />
-        <meta property="og:url" content={BASE_URL} />
+        <meta property="og:url" content={isEnglish ? `${BASE_URL}/en` : BASE_URL} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="2026 병오년 운세 - 붉은 말의 해" />
-        <meta name="twitter:description" content="2026년 병오년 붉은 말의 해! 12간지 띠별 신년운세를 확인하세요." />
+        <meta name="twitter:title" content={t('siteTitle')} />
+        <meta name="twitter:description" content={t('siteDescription')} />
         <meta name="twitter:image" content={`${BASE_URL}/redhorse.png`} />
       </Helmet>
       <LoadingScreen />
@@ -98,18 +105,67 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
         <span style={{ fontSize: '20px', fontWeight: 'bold', fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>i</span>
       </button>
 
+      {/* 언어 전환 버튼 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '15px',
+          right: '15px',
+          zIndex: 200,
+          background: 'rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: '20px',
+          padding: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2px',
+        }}
+      >
+        <button
+          onClick={() => navigate('/en')}
+          style={{
+            background: isEnglish ? 'rgba(255,255,255,0.2)' : 'transparent',
+            border: 'none',
+            borderRadius: '16px',
+            padding: '4px 10px',
+            color: isEnglish ? 'white' : 'rgba(255,255,255,0.5)',
+            cursor: 'pointer',
+            fontSize: '12px',
+            fontWeight: isEnglish ? 'bold' : 'normal',
+            transition: 'all 0.2s',
+          }}
+        >
+          EN
+        </button>
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            background: !isEnglish ? 'rgba(255,255,255,0.2)' : 'transparent',
+            border: 'none',
+            borderRadius: '16px',
+            padding: '4px 10px',
+            color: !isEnglish ? 'white' : 'rgba(255,255,255,0.5)',
+            cursor: 'pointer',
+            fontSize: '12px',
+            fontWeight: !isEnglish ? 'bold' : 'normal',
+            transition: 'all 0.2s',
+          }}
+        >
+          한국어
+        </button>
+      </div>
+
       {/* 우측 상단 공유 버튼 */}
       <button
         onClick={async () => {
-          const shareUrl = `${BASE_URL}/share/index.html`;
           const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             || ('ontouchstart' in window);
 
           if (isMobileDevice && navigator.share && window.isSecureContext) {
             try {
               await navigator.share({
-                title: '2026 병오년 운세',
-                text: '2026년 붉은 말의 해! 나의 신년운세를 확인해보세요!',
+                title: t('shareTitle'),
+                text: t('shareText'),
                 url: shareUrl,
               });
               return;
@@ -130,14 +186,14 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
               document.execCommand('copy');
               document.body.removeChild(textarea);
             }
-            alert('링크가 복사되었습니다!');
+            alert(t('linkCopied'));
           } catch (err) {
-            alert('링크가 복사되었습니다!');
+            alert(t('linkCopied'));
           }
         }}
         style={{
           position: 'fixed',
-          top: '15px',
+          top: '55px',
           right: '15px',
           zIndex: 200,
           background: 'rgba(0,0,0,0.5)',
@@ -162,10 +218,10 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       </button>
 
       <div className="main-header">
-        <h1>2026년 운세</h1>
-        <p>丙午年(붉은 말의해)</p>
-        <button className="group-photo-link" onClick={() => navigate('/group-photo')}>
-          축하메세지 보기
+        <h1>{t('mainTitle')}</h1>
+        <p>{t('mainSubtitle')}</p>
+        <button className="group-photo-link" onClick={() => navigate(`${basePath}/group-photo`)}>
+          {t('groupPhotoLink')}
         </button>
       </div>
 
@@ -197,8 +253,8 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       {/* 말풍선 */}
       {showBubble && (
         <div className="horse-bubble">
-          <p>2026년은 붉은 말의 해!</p>
-          <p className="sub">주변 동물을 선택하면<br />운세를 볼 수 있어요</p>
+          <p>{t('horseBubble1')}</p>
+          <p className="sub" dangerouslySetInnerHTML={{ __html: t('horseBubble2') }} />
           <div className="bubble-tail" />
         </div>
       )}
@@ -295,12 +351,10 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
       )}
 
       <div className="main-footer">
-        <p>{selectedSign ? '잠시만 기다려주세요...' : '띠를 선택해서 신년운세를 확인하세요'}</p>
+        <p>{selectedSign ? t('pleaseWait') : t('selectZodiac')}</p>
         {!selectedSign && (
           <p className="control-hint">
-            {mobile
-              ? '한 손가락 회전 · 두 손가락 확대/축소'
-              : '좌클릭 회전 · 스크롤 확대/축소'}
+            {mobile ? t('controlHintMobile') : t('controlHintDesktop')}
           </p>
         )}
       </div>

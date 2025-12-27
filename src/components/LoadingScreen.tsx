@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from '../data/translations';
 
 function LoadingScreen() {
   const { progress, active } = useProgress();
   const [show, setShow] = useState(true);
+  const { lang } = useLanguage();
+  const { t } = useTranslation(lang);
 
   useEffect(() => {
     if (progress >= 100 && !active) {
@@ -18,9 +22,9 @@ function LoadingScreen() {
   return (
     <div className={`loading-screen ${progress >= 100 ? 'fade-out' : ''}`}>
       <div className="loading-content">
-        <img src="/redhorse.png" alt="붉은 말" className="loading-image" />
-        <h1 className="loading-title">2026 병오년</h1>
-        <p className="loading-subtitle">붉은 말의 해, 당신의 운세는?</p>
+        <img src="/redhorse.png" alt="Red Horse" className="loading-image" />
+        <h1 className="loading-title">{t('loadingMainTitle')}</h1>
+        <p className="loading-subtitle">{t('loadingMainSubtitle')}</p>
         <div className="loading-bar-container">
           <div
             className="loading-bar"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Text } from '@react-three/drei';
 import { ThreeEvent } from '@react-three/fiber';
 import { ZodiacSign, ZODIAC_INFO } from '../../types/fortune';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ZodiacItemProps {
   sign: ZodiacSign;
@@ -12,6 +13,7 @@ interface ZodiacItemProps {
 
 function ZodiacItem({ sign, position, onClick, isAvailable }: ZodiacItemProps) {
   const [hovered, setHovered] = useState(false);
+  const { isEnglish } = useLanguage();
   const info = ZODIAC_INFO[sign];
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
@@ -20,6 +22,8 @@ function ZodiacItem({ sign, position, onClick, isAvailable }: ZodiacItemProps) {
       onClick(sign);
     }
   };
+
+  const name = isEnglish ? info.nameEn : `${info.nameKo}띠`;
 
   return (
     <group position={position}>
@@ -51,7 +55,7 @@ function ZodiacItem({ sign, position, onClick, isAvailable }: ZodiacItemProps) {
         anchorX="center"
         anchorY="middle"
       >
-        {info.nameKo}띠
+        {name}
       </Text>
     </group>
   );

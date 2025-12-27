@@ -8,6 +8,8 @@ import * as THREE from 'three';
 import { useMemo } from 'react';
 import { SkeletonUtils } from 'three-stdlib';
 import { ZodiacSign } from '../types/fortune';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation, newYearMessages } from '../data/translations';
 
 const BASE_URL = 'https://fortune.137-5.com';
 
@@ -15,6 +17,8 @@ const BASE_URL = 'https://fortune.137-5.com';
 function GroupPhotoLoadingScreen() {
   const { progress, active } = useProgress();
   const [show, setShow] = useState(true);
+  const { lang } = useLanguage();
+  const { t } = useTranslation(lang);
 
   useEffect(() => {
     if (progress >= 100 && !active) {
@@ -29,8 +33,8 @@ function GroupPhotoLoadingScreen() {
     <div className={`loading-screen ${progress >= 100 ? 'fade-out' : ''}`}>
       <div className="loading-content">
         <img src="/all_animal.png" alt="12간지" className="loading-image" />
-        <h1 className="loading-title">새해 인사</h1>
-        <p className="loading-subtitle">모두 새해 福 많이 받으세요!</p>
+        <h1 className="loading-title">{t('loadingTitle')}</h1>
+        <p className="loading-subtitle">{t('loadingSubtitle')}</p>
         <div className="loading-bar-container">
           <div className="loading-bar" style={{ width: `${progress}%` }} />
         </div>
@@ -39,25 +43,6 @@ function GroupPhotoLoadingScreen() {
     </div>
   );
 }
-
-// 새해 축하 메시지 목록
-const NEW_YEAR_MESSAGES = [
-  '새해 복 많이 받으세요! 🎊',
-  '2026년 건강하고 행복하세요!',
-  '올해는 좋은 일만 가득하길! ✨',
-  '만사형통하세요! 🙏',
-  '부자 되세요! 💰',
-  '사랑 가득한 한 해 되세요! 💕',
-  '꿈꾸는 모든 것 이루세요!',
-  '웃음 가득한 2026년! 😊',
-  '행운이 함께하길! 🍀',
-  '늘 건강하세요! 💪',
-  '소원성취하세요! ⭐',
-  '좋은 인연 가득하길!',
-  '매일 행복하세요!',
-  '승승장구하세요! 🚀',
-  '대박나세요! 🎉',
-];
 
 // 모델 컴포넌트
 function AnimalModel({
@@ -236,11 +221,6 @@ function GroupPhotoScene({ onAnimalClick, bubbles, onBubbleUpdate, onControlStar
         onEnd={onControlEnd}
       />
 
-      {/* 조명 (줄임) */}
-      {/* <ambientLight intensity={0.2} />
-      <directionalLight position={[5, 10, 5]} intensity={0.4} />
-      <directionalLight position={[-5, 8, 5]} intensity={0.2} /> */}
-
       {/* 메인 말 (앞줄 중앙 랜덤) */}
       <Suspense fallback={null}>
         <AnimalModel
@@ -290,6 +270,10 @@ interface BubbleState {
 
 function GroupPhotoPage() {
   const navigate = useNavigate();
+  const { lang, basePath, isEnglish } = useLanguage();
+  const { t } = useTranslation(lang);
+  const messages = newYearMessages[lang];
+
   const [bubbles, setBubbles] = useState<BubbleState[]>([]);
   const [isControlling, setIsControlling] = useState(false);
   const layout = useMemo(() => getRandomLayout(), []);
@@ -304,7 +288,7 @@ function GroupPhotoPage() {
 
   // 동물 클릭 핸들러
   const handleAnimalClick = useCallback((worldPos: [number, number, number]) => {
-    const randomMessage = NEW_YEAR_MESSAGES[Math.floor(Math.random() * NEW_YEAR_MESSAGES.length)];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const newBubble: BubbleState = {
       id: `click-${Date.now()}`,
       message: randomMessage,
@@ -313,7 +297,7 @@ function GroupPhotoPage() {
       y: 0,
     };
     setBubbles([newBubble]);
-  }, []);
+  }, [messages]);
 
   // 말풍선 스크린 위치 업데이트
   const handleBubbleUpdate = useCallback((id: string, screenPos: { x: number; y: number }) => {
@@ -353,7 +337,7 @@ function GroupPhotoPage() {
         const timer = setTimeout(() => {
           const newBubble: BubbleState = {
             id: `auto-${Date.now()}-${i}`,
-            message: NEW_YEAR_MESSAGES[Math.floor(Math.random() * NEW_YEAR_MESSAGES.length)],
+            message: messages[Math.floor(Math.random() * messages.length)],
             worldPos: pos,
             x: 0,
             y: 0,
@@ -378,7 +362,12 @@ function GroupPhotoPage() {
       timers.forEach(t => clearTimeout(t));
       clearInterval(interval);
     };
-  }, [isControlling, allPositions]);
+  }, [isControlling, allPositions, messages]);
+
+  // 공유 URL
+  const shareUrl = isEnglish
+    ? `${BASE_URL}/share/en/group-photo/index.html`
+    : `${BASE_URL}/share/group-photo/index.html`;
 
   return (
     <div className="group-photo-page" style={{
@@ -390,23 +379,23 @@ function GroupPhotoPage() {
       WebkitTouchCallout: 'none',
     }}>
       <Helmet>
-        <title>2026 병오년 새해 인사 - 12간지 축하 메시지</title>
-        <meta name="description" content="2026년 병오년 붉은 말의 해! 12간지 동물들이 전하는 새해 축하 메시지를 확인하세요." />
+        <title>{t('groupPhotoTitle')}</title>
+        <meta name="description" content={t('groupPhotoDescription')} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="2026 병오년 새해 인사 - 12간지 축하 메시지" />
-        <meta property="og:description" content="2026년 병오년 붉은 말의 해! 12간지 동물들이 전하는 새해 축하 메시지를 확인하세요." />
+        <meta property="og:title" content={t('groupPhotoTitle')} />
+        <meta property="og:description" content={t('groupPhotoDescription')} />
         <meta property="og:image" content={`${BASE_URL}/all_animal.png`} />
-        <meta property="og:url" content={`${BASE_URL}/group-photo`} />
+        <meta property="og:url" content={`${BASE_URL}${basePath}/group-photo`} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="2026 병오년 새해 인사 - 12간지 축하 메시지" />
-        <meta name="twitter:description" content="2026년 병오년 붉은 말의 해! 12간지 동물들이 전하는 새해 축하 메시지를 확인하세요." />
+        <meta name="twitter:title" content={t('groupPhotoTitle')} />
+        <meta name="twitter:description" content={t('groupPhotoDescription')} />
         <meta name="twitter:image" content={`${BASE_URL}/all_animal.png`} />
       </Helmet>
       <GroupPhotoLoadingScreen />
 
       {/* 뒤로가기 버튼 */}
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate(basePath || '/')}
         style={{
           position: 'fixed',
           top: '15px',
@@ -463,7 +452,6 @@ function GroupPhotoPage() {
         {/* 공유 버튼 */}
         <button
           onClick={async () => {
-            const shareUrl = `${BASE_URL}/share/group-photo/index.html`;
             const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
               || ('ontouchstart' in window);
 
@@ -471,8 +459,8 @@ function GroupPhotoPage() {
             if (isMobileDevice && navigator.share && window.isSecureContext) {
               try {
                 await navigator.share({
-                  title: '2026 병오년 새해 인사',
-                  text: '2026년 붉은 말의 해! 모두 새해 福 많이 받으세요!',
+                  title: t('groupPhotoTitle'),
+                  text: t('loadingSubtitle'),
                   url: shareUrl,
                 });
                 return;
@@ -494,9 +482,9 @@ function GroupPhotoPage() {
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
               }
-              alert('링크가 복사되었습니다!');
+              alert(t('linkCopied'));
             } catch (err) {
-              alert('링크가 복사되었습니다!');
+              alert(t('linkCopied'));
             }
           }}
           style={{
@@ -541,7 +529,7 @@ function GroupPhotoPage() {
           color: 'rgba(255,255,255,0.9)',
           letterSpacing: '2px',
         }}>
-          <span style={{ opacity: 0.6 }}>丙午年</span>
+          <span style={{ opacity: 0.6 }}>{t('headerYear')}</span>
           <span style={{ margin: '0 12px', opacity: 0.4 }}>|</span>
           <span style={{
             fontWeight: 'bold',
@@ -550,7 +538,7 @@ function GroupPhotoPage() {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            2026 붉은 말의 해
+            {t('headerRedHorse')}
           </span>
         </p>
       </div>
@@ -636,7 +624,7 @@ function GroupPhotoPage() {
           color: 'rgba(255,255,255,0.9)',
           letterSpacing: '3px',
         }}>
-          모두 새해
+          {t('footerNewYear')}
           <span style={{
             margin: '0 10px',
             fontSize: '28px',
@@ -647,9 +635,9 @@ function GroupPhotoPage() {
             backgroundClip: 'text',
             verticalAlign: 'middle',
           }}>
-            福
+            {t('footerBlessing')}
           </span>
-          많이 받으세요
+          {t('footerWishes')}
         </p>
       </div>
     </div>

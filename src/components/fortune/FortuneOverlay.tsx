@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ZodiacFortune } from '../../types/fortune';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useTranslation } from '../../data/translations';
 
 const BASE_URL = 'https://fortune.137-5.com';
 
@@ -14,18 +16,40 @@ const isMobile = () => {
     || ('ontouchstart' in window);
 };
 
+// 오행 영어 매핑
+const ELEMENT_MAP: Record<string, { ko: string; en: string }> = {
+  '土': { ko: '흙', en: 'Earth' },
+  '水': { ko: '물', en: 'Water' },
+  '木': { ko: '나무', en: 'Wood' },
+  '金': { ko: '쇠', en: 'Metal' },
+  '火': { ko: '불', en: 'Fire' },
+};
+
 function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
   const navigate = useNavigate();
+  const { lang, basePath, isEnglish } = useLanguage();
+  const { t } = useTranslation(lang);
+
+  // 영어/한국어에 맞는 값들
+  const name = isEnglish ? zodiac.nameEn : zodiac.nameKo;
+  const elementRelation = isEnglish ? zodiac.elementRelationEn : zodiac.elementRelation;
+  const elementDescription = isEnglish ? zodiac.elementDescriptionEn : zodiac.elementDescription;
+  const adviceDont = isEnglish ? zodiac.adviceDontEn : zodiac.adviceDont;
+  const adviceDo = isEnglish ? zodiac.adviceDoEn : zodiac.adviceDo;
+  const quote = isEnglish ? zodiac.quoteEn : zodiac.quote;
+  const elementText = isEnglish ? ELEMENT_MAP[zodiac.element]?.en : ELEMENT_MAP[zodiac.element]?.ko;
+
+  // 공유 URL
+  const shareUrl = isEnglish
+    ? `${BASE_URL}/share/en/fortune/${zodiac.sign}/index.html`
+    : `${BASE_URL}/share/fortune/${zodiac.sign}/index.html`;
 
   const handleShare = async () => {
-    const shareUrl = `${BASE_URL}/share/fortune/${zodiac.sign}/index.html`;
-
-    // 모바일에서만 Web Share API 사용
     if (isMobile() && navigator.share && window.isSecureContext) {
       try {
         await navigator.share({
-          title: `2026 병오년 ${zodiac.nameKo}띠 운세`,
-          text: `${zodiac.nameKo}띠 2026년 운세를 확인하세요!`,
+          title: isEnglish ? `2026 ${zodiac.nameEn} Fortune` : `2026 병오년 ${zodiac.nameKo}띠 운세`,
+          text: isEnglish ? `${zodiac.nameEn} 2026 Fortune!` : `${zodiac.nameKo}띠 2026년 운세를 확인하세요!`,
           url: shareUrl,
         });
         return;
@@ -51,11 +75,12 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }
-      alert('링크가 복사되었습니다!');
+      alert(t('linkCopied'));
     } catch (err) {
-      alert('링크가 복사되었습니다!');
+      alert(t('linkCopied'));
     }
   };
+
   return (
     <div className="fortune-overlay">
       {/* 상단 */}
@@ -69,34 +94,35 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
               </button>
             )}
             <span className="emoji">{zodiac.emoji}</span>
-            <span className="name">{zodiac.nameKo}띠</span>
+            <span className="name">{name}{t('zodiacSuffix')}</span>
           </div>
           <div className="element-right">
             <span className="element-year">2026</span>
-            <span className="element-char fire">火<span className="element-ko">(불)</span></span>
+            <span className="element-char fire">
+              {isEnglish ? 'Fire' : '火'}
+              {!isEnglish && <span className="element-ko">(불)</span>}
+            </span>
             <span className="element-arrow">→</span>
             <span className={`element-char ${zodiac.element === '土' ? 'earth' : zodiac.element === '水' ? 'water' : zodiac.element === '木' ? 'wood' : zodiac.element === '金' ? 'metal' : 'fire'}`}>
-              {zodiac.element}
-              <span className="element-ko">
-                ({zodiac.element === '土' ? '흙' : zodiac.element === '水' ? '물' : zodiac.element === '木' ? '나무' : zodiac.element === '金' ? '쇠' : '불'})
-              </span>
+              {isEnglish ? ELEMENT_MAP[zodiac.element]?.en : zodiac.element}
+              {!isEnglish && <span className="element-ko">({elementText})</span>}
             </span>
             <span className={`element-result ${zodiac.elementRelation === '상생' || zodiac.elementRelation === '동류' || zodiac.elementRelation === '극대화' ? 'good' : 'bad'}`}>
-              {zodiac.elementRelation}
+              {elementRelation}
             </span>
           </div>
         </div>
 
         {/* 오행 설명 */}
         <div className="element-description">
-          {zodiac.elementDescription}
+          {elementDescription}
         </div>
 
         {/* 2열 그리드: 왼쪽(색/숫자) 오른쪽(궁합) */}
         <div className="info-grid">
           <div className="info-left">
             <div className="info-item">
-              <span className="info-label">행운색</span>
+              <span className="info-label">{t('luckyColor')}</span>
               <div className="color-dots">
                 {zodiac.luckyColors.map((color, i) => (
                   <span key={i} className="dot" style={{ background: color.hex }}></span>
@@ -104,21 +130,21 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
               </div>
             </div>
             <div className="info-item">
-              <span className="info-label">행운숫자</span>
+              <span className="info-label">{t('luckyNumber')}</span>
               <span className="info-value nums">{zodiac.luckyNumbers.join(' · ')}</span>
             </div>
           </div>
           <div className="info-right">
             <div className="info-item good">
-              <span className="info-label">좋은궁합</span>
+              <span className="info-label">{t('goodMatch')}</span>
               <span className="info-value">
-                {zodiac.goodMatch.map((m) => `${m.emoji}${m.name}`).join(' ')}
+                {zodiac.goodMatch.map((m) => `${m.emoji}${isEnglish ? m.nameEn : m.name}`).join(' ')}
               </span>
             </div>
             <div className="info-item bad">
-              <span className="info-label">주의</span>
+              <span className="info-label">{t('badMatch')}</span>
               <span className="info-value">
-                {zodiac.badMatch.map((m) => `${m.emoji}${m.name}`).join(' ')}
+                {zodiac.badMatch.map((m) => `${m.emoji}${isEnglish ? m.nameEn : m.name}`).join(' ')}
               </span>
             </div>
           </div>
@@ -128,8 +154,8 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
       {/* 하단 */}
       <div className="fortune-bottom">
         <div className="share-row">
-          <button className="other-zodiac-btn" onClick={() => navigate('/')}>
-            다른띠보기
+          <button className="other-zodiac-btn" onClick={() => navigate(basePath || '/')}>
+            {t('otherZodiac')}
           </button>
           <button className="share-btn" onClick={handleShare}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -143,17 +169,17 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
         </div>
         <div className="advice-row">
           <div className="advice-item dont">
-            <span className="icon">조심할것:</span>
-            <span className="text">{zodiac.adviceDont}</span>
+            <span className="icon">{t('adviceDont')}</span>
+            <span className="text">{adviceDont}</span>
           </div>
           <div className="advice-item do">
-            <span className="icon">해야할것:</span>
-            <span className="text">{zodiac.adviceDo}</span>
+            <span className="icon">{t('adviceDo')}</span>
+            <span className="text">{adviceDo}</span>
           </div>
         </div>
         <div className="main-quote">
-          <p>{zodiac.quote[0]}</p>
-          <p className="highlight">{zodiac.quote[1]}</p>
+          <p>{quote[0]}</p>
+          <p className="highlight">{quote[1]}</p>
         </div>
       </div>
     </div>

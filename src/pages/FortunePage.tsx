@@ -6,6 +6,8 @@ import TurntableModel from '../components/TurntableModel';
 import FortuneOverlay from '../components/fortune/FortuneOverlay';
 import FortuneLoadingScreen from '../components/FortuneLoadingScreen';
 import { ZodiacFortune, ZodiacSign } from '../types/fortune';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from '../data/translations';
 import * as THREE from 'three';
 
 const BASE_URL = 'https://fortune.137-5.com';
@@ -80,6 +82,8 @@ const MODEL_MAP: Record<string, string> = {
 function FortunePage({ zodiac, onBack }: FortunePageProps) {
   const [debugMode, setDebugMode] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(true);
+  const { lang, isEnglish } = useLanguage();
+  const { t } = useTranslation(lang);
 
   // 모델 경로 결정 (없으면 기본값)
   const modelUrl = MODEL_MAP[zodiac.sign] || '/models/cow-ani.glb';
@@ -101,8 +105,15 @@ function FortunePage({ zodiac, onBack }: FortunePageProps) {
   }, []);
 
   const ogImage = IMAGE_MAP[zodiac.sign] || '/redhorse.png';
-  const pageTitle = `2026 병오년 ${zodiac.nameKo}띠 운세`;
-  const pageDescription = `${zodiac.emoji} ${zodiac.nameKo}띠 2026년 신년운세 - ${zodiac.quote[0]} ${zodiac.quote[1]}`;
+  const name = isEnglish ? zodiac.nameEn : zodiac.nameKo;
+  const quote = isEnglish ? zodiac.quoteEn : zodiac.quote;
+
+  const pageTitle = t('fortuneTitle', { name });
+  const pageDescription = t('fortuneDescription', {
+    emoji: zodiac.emoji,
+    name,
+    quote: `${quote[0]} ${quote[1]}`,
+  });
 
   return (
     <div className="fortune-page">
@@ -113,7 +124,7 @@ function FortunePage({ zodiac, onBack }: FortunePageProps) {
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:image" content={`${BASE_URL}${ogImage}`} />
-        <meta property="og:url" content={`${BASE_URL}/fortune/${zodiac.sign}`} />
+        <meta property="og:url" content={`${BASE_URL}${isEnglish ? '/en' : ''}/fortune/${zodiac.sign}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />

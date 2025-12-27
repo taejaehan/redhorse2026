@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
 import { ZodiacFortune } from '../types/fortune';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTranslation } from '../data/translations';
 
 // 띠별 이미지 경로 매핑
 const ANIMAL_IMAGE_MAP: Record<string, string> = {
@@ -25,6 +27,8 @@ interface FortuneLoadingScreenProps {
 function FortuneLoadingScreen({ zodiac }: FortuneLoadingScreenProps) {
   const { progress, active } = useProgress();
   const [show, setShow] = useState(true);
+  const { lang, isEnglish } = useLanguage();
+  const { t } = useTranslation(lang);
 
   useEffect(() => {
     if (progress >= 100 && !active) {
@@ -36,13 +40,14 @@ function FortuneLoadingScreen({ zodiac }: FortuneLoadingScreenProps) {
   if (!show) return null;
 
   const imagePath = ANIMAL_IMAGE_MAP[zodiac.sign] || '/12animal/horse.png';
+  const name = isEnglish ? zodiac.nameEn : zodiac.nameKo;
 
   return (
     <div className={`loading-screen ${progress >= 100 ? 'fade-out' : ''}`}>
       <div className="loading-content">
-        <img src={imagePath} alt={zodiac.nameKo} className="loading-image" />
-        <h1 className="loading-title">{zodiac.nameKo}띠</h1>
-        <p className="loading-subtitle">2026년 운세를 불러오는 중...</p>
+        <img src={imagePath} alt={name} className="loading-image" />
+        <h1 className="loading-title">{t('loadingFortuneTitle', { name })}</h1>
+        <p className="loading-subtitle">{t('loadingFortuneSubtitle')}</p>
         <div className="loading-bar-container">
           <div
             className="loading-bar"

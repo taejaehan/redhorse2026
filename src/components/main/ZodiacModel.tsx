@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { SkeletonUtils } from 'three-stdlib';
 import { ThreeEvent } from '@react-three/fiber';
 import { ZodiacSign, ZODIAC_INFO } from '../../types/fortune';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const MODEL_MAP: Record<ZodiacSign, string> = {
   rat: '/models/mouse.glb',
@@ -41,6 +42,7 @@ function ZodiacModel({
 }: ZodiacModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
+  const { isEnglish } = useLanguage();
 
   const modelUrl = MODEL_MAP[sign];
   const { scene } = useGLTF(modelUrl);
@@ -65,6 +67,7 @@ function ZodiacModel({
 
   const info = ZODIAC_INFO[sign];
   const displayScale = hovered ? scale * 1.1 : scale;
+  const labelText = isEnglish ? info.nameEn : `${info.nameKo}띠`;
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -120,7 +123,7 @@ function ZodiacModel({
               transition: 'color 0.2s',
             }}
           >
-            {info.nameKo}띠
+            {labelText}
           </div>
         </Html>
       )}

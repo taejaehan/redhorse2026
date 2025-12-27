@@ -11,19 +11,25 @@ export interface ZodiacFortune {
   years: number[];
   // 오행 정보
   element: string;           // 기본 오행 (水, 土, 木, 火, 金)
-  elementRelation: string;   // 상생/상극
-  elementDescription: string; // 오행 설명
+  elementRelation: string;   // 상생/상극 (한국어)
+  elementRelationEn: string; // 상생/상극 (영어)
+  elementDescription: string; // 오행 설명 (한국어)
+  elementDescriptionEn: string; // 오행 설명 (영어)
   // 행운 속성
-  luckyColors: { name: string; hex: string }[];
+  luckyColors: { name: string; nameEn: string; hex: string }[];
   luckyNumbers: number[];
   luckyDirection: string;
+  luckyDirectionEn: string;
   // 궁합
-  goodMatch: { sign: ZodiacSign; emoji: string; name: string }[];
-  badMatch: { sign: ZodiacSign; emoji: string; name: string }[];
+  goodMatch: { sign: ZodiacSign; emoji: string; name: string; nameEn: string }[];
+  badMatch: { sign: ZodiacSign; emoji: string; name: string; nameEn: string }[];
   // 조언
   adviceDont: string;
+  adviceDontEn: string;
   adviceDo: string;
-  quote: string[];  // 2줄
+  adviceDoEn: string;
+  quote: string[];  // 2줄 (한국어)
+  quoteEn: string[];  // 2줄 (영어)
 }
 
 export interface FortuneData {
@@ -43,17 +49,17 @@ export interface Section {
   duration: number;
 }
 
-export const ZODIAC_INFO: Record<ZodiacSign, { nameKo: string; emoji: string }> = {
-  rat: { nameKo: '쥐', emoji: '🐭' },
-  ox: { nameKo: '소', emoji: '🐮' },
-  tiger: { nameKo: '호랑이', emoji: '🐯' },
-  rabbit: { nameKo: '토끼', emoji: '🐰' },
-  dragon: { nameKo: '용', emoji: '🐲' },
-  snake: { nameKo: '뱀', emoji: '🐍' },
-  horse: { nameKo: '말', emoji: '🐴' },
-  sheep: { nameKo: '양', emoji: '🐑' },
-  monkey: { nameKo: '원숭이', emoji: '🐵' },
-  rooster: { nameKo: '닭', emoji: '🐔' },
-  dog: { nameKo: '개', emoji: '🐶' },
-  pig: { nameKo: '돼지', emoji: '🐷' },
+export const ZODIAC_INFO: Record<ZodiacSign, { nameKo: string; nameEn: string; emoji: string }> = {
+  rat: { nameKo: '쥐', nameEn: 'Rat', emoji: '🐭' },
+  ox: { nameKo: '소', nameEn: 'Ox', emoji: '🐮' },
+  tiger: { nameKo: '호랑이', nameEn: 'Tiger', emoji: '🐯' },
+  rabbit: { nameKo: '토끼', nameEn: 'Rabbit', emoji: '🐰' },
+  dragon: { nameKo: '용', nameEn: 'Dragon', emoji: '🐲' },
+  snake: { nameKo: '뱀', nameEn: 'Snake', emoji: '🐍' },
+  horse: { nameKo: '말', nameEn: 'Horse', emoji: '🐴' },
+  sheep: { nameKo: '양', nameEn: 'Sheep', emoji: '🐑' },
+  monkey: { nameKo: '원숭이', nameEn: 'Monkey', emoji: '🐵' },
+  rooster: { nameKo: '닭', nameEn: 'Rooster', emoji: '🐔' },
+  dog: { nameKo: '개', nameEn: 'Dog', emoji: '🐶' },
+  pig: { nameKo: '돼지', nameEn: 'Pig', emoji: '🐷' },
 };
