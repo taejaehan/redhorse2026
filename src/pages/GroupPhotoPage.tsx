@@ -278,6 +278,14 @@ function GroupPhotoPage() {
   const [isControlling, setIsControlling] = useState(false);
   const layout = useMemo(() => getRandomLayout(), []);
 
+  // GA 이벤트: greeting 페이지 방문
+  useEffect(() => {
+    gtag('event', 'page_view', {
+      page_title: 'greeting',
+      language: lang,
+    });
+  }, [lang]);
+
   // 모든 동물 위치 (메인 말 + 12간지)
   const allPositions = useMemo(() => {
     return [
@@ -529,17 +537,22 @@ function GroupPhotoPage() {
           color: 'rgba(255,255,255,0.9)',
           letterSpacing: '2px',
         }}>
-          <span style={{ opacity: 0.6 }}>{t('headerYear')}</span>
-          <span style={{ margin: '0 12px', opacity: 0.4 }}>|</span>
-          <span style={{
-            fontWeight: 'bold',
-            background: 'linear-gradient(90deg, #ff6b6b, #ffc107)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            {t('headerRedHorse')}
-          </span>
+          {t('headerYear') && (
+            <>
+              <span style={{ opacity: 0.6 }}>{t('headerYear')}</span>
+              <span style={{ margin: '0 12px', opacity: 0.4 }}>|</span>
+            </>
+          )}
+          <span
+            style={{
+              fontWeight: 'bold',
+              background: 'linear-gradient(90deg, #ff6b6b, #ffc107)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+            dangerouslySetInnerHTML={{ __html: t('headerRedHorse') }}
+          />
         </p>
       </div>
 
@@ -625,8 +638,9 @@ function GroupPhotoPage() {
           letterSpacing: '3px',
         }}>
           {t('footerNewYear')}
+          {isEnglish && <br />}
           <span style={{
-            margin: '0 10px',
+            margin: isEnglish ? '0' : '0 10px',
             fontSize: '28px',
             fontWeight: 'bold',
             background: 'linear-gradient(180deg, #ffd700, #ff6b6b)',
@@ -637,7 +651,7 @@ function GroupPhotoPage() {
           }}>
             {t('footerBlessing')}
           </span>
-          {t('footerWishes')}
+          {isEnglish ? ` ${t('footerWishes')}` : t('footerWishes')}
         </p>
       </div>
     </div>

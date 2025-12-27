@@ -96,7 +96,7 @@ function FortuneOverlay({ zodiac, onBack }: FortuneOverlayProps) {
             <span className="emoji">{zodiac.emoji}</span>
             <span className="name">{name}{t('zodiacSuffix')}</span>
           </div>
-          <div className="element-right">
+          <div className={`element-right ${isEnglish ? 'en' : ''}`}>
             <span className="element-year">2026</span>
             <span className="element-char fire">
               {isEnglish ? 'Fire' : '火'}

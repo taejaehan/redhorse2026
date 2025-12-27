@@ -24,7 +24,7 @@ function LoadingScreen() {
       <div className="loading-content">
         <img src="/redhorse.png" alt="Red Horse" className="loading-image" />
         <h1 className="loading-title">{t('loadingMainTitle')}</h1>
-        <p className="loading-subtitle">{t('loadingMainSubtitle')}</p>
+        <p className="loading-subtitle" dangerouslySetInnerHTML={{ __html: t('loadingMainSubtitle') }} />
         <div className="loading-bar-container">
           <div
             className="loading-bar"

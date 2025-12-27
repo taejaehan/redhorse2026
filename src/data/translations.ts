@@ -104,7 +104,7 @@ const translations: Record<Language, Translations> = {
   en: {
     // Loading screens
     loadingMainTitle: '2026 Bingwu Year',
-    loadingMainSubtitle: 'Year of the Red Horse, what\'s your fortune?',
+    loadingMainSubtitle: 'Year of the Red Horse,<br />what\'s your fortune?',
     loadingFortuneTitle: '{name}',
     loadingFortuneSubtitle: 'Loading your 2026 fortune...',
     // Main page
@@ -137,15 +137,15 @@ const translations: Record<Language, Translations> = {
     goodMatch: 'Good Match',
     badMatch: 'Caution',
     adviceDont: 'Avoid:',
-    adviceDo: 'Focus on:',
+    adviceDo: 'Focus:',
     otherZodiac: 'Other Signs',
     // Group photo page
     groupPhotoTitle: '2026 New Year Greetings - Chinese Zodiac',
     groupPhotoDescription: '2026 is the Year of the Red Horse! Check out the New Year greetings from all 12 zodiac animals.',
     loadingTitle: 'New Year Greetings',
     loadingSubtitle: 'Wishing you happiness and prosperity!',
-    headerYear: 'Bingwu Year',
-    headerRedHorse: '2026 Year of the Red Horse',
+    headerYear: '',
+    headerRedHorse: '2026 Year of<br />the Red Horse',
     footerNewYear: 'Happy New Year',
     footerBlessing: 'Fortune',
     footerWishes: 'to All',

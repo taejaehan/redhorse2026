@@ -35,7 +35,12 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
     setSelectedSign(sign);
     setSelectedPosition(worldPosition);
     setShowBubble(false);
-  }, []);
+    // GA 이벤트: 띠 선택
+    gtag('event', 'select_zodiac', {
+      zodiac_sign: sign,
+      language: lang,
+    });
+  }, [lang]);
 
   const handleHorseClick = useCallback(() => {
     setShowBubble((prev) => !prev);
@@ -122,7 +127,12 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
         }}
       >
         <button
-          onClick={() => navigate('/en')}
+          onClick={() => {
+            if (!isEnglish) {
+              gtag('event', 'switch_language', { from: 'ko', to: 'en' });
+            }
+            navigate('/en');
+          }}
           style={{
             background: isEnglish ? 'rgba(255,255,255,0.2)' : 'transparent',
             border: 'none',
@@ -138,7 +148,12 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
           EN
         </button>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => {
+            if (isEnglish) {
+              gtag('event', 'switch_language', { from: 'en', to: 'ko' });
+            }
+            navigate('/');
+          }}
           style={{
             background: !isEnglish ? 'rgba(255,255,255,0.2)' : 'transparent',
             border: 'none',
@@ -161,6 +176,14 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
           const isMobileDevice = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
             || ('ontouchstart' in window);
 
+          // GA 이벤트: 공유 클릭
+          gtag('event', 'share', {
+            method: isMobileDevice ? 'mobile_share' : 'clipboard',
+            content_type: 'main_page',
+            language: lang,
+          });
+
+          // 모바일: 시스템 공유만 (alert 없음)
           if (isMobileDevice && navigator.share && window.isSecureContext) {
             try {
               await navigator.share({
@@ -168,10 +191,11 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
                 text: t('shareText'),
                 url: shareUrl,
               });
-              return;
-            } catch (err) { /* fallback */ }
+            } catch (err) { /* 취소해도 무시 */ }
+            return;
           }
 
+          // 데스크탑: 클립보드 복사 + alert
           try {
             if (navigator.clipboard && window.isSecureContext) {
               await navigator.clipboard.writeText(shareUrl);

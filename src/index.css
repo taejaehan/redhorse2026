@@ -412,6 +412,24 @@ body,
   background: rgba(255, 100, 100, 0.15);
 }
 
+/* 영어 모드: 폰트 축소 */
+.element-right.en {
+  gap: calc(8px * var(--fortune-scale));
+}
+.element-right.en .element-year {
+  font-size: calc(36px * var(--fortune-scale));
+}
+.element-right.en .element-char {
+  font-size: calc(44px * var(--fortune-scale));
+}
+.element-right.en .element-arrow {
+  font-size: calc(36px * var(--fortune-scale));
+}
+.element-right.en .element-result {
+  font-size: calc(28px * var(--fortune-scale));
+  padding: calc(6px * var(--fortune-scale)) calc(14px * var(--fortune-scale));
+}
+
 /* 오행 설명 */
 .element-description {
   font-size: calc(48px * var(--fortune-scale));
