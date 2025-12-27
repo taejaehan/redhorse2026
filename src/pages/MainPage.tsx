@@ -216,11 +216,6 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
             height: '100vh',
             background: '#000008',
             zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
-            boxSizing: 'border-box',
           }}
         >
           <div
@@ -228,12 +223,12 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
             onClick={() => setShowInfo(false)}
             style={{
               background: '#000008',
-              borderRadius: '16px',
-              padding: '24px',
-              maxWidth: '500px',
               width: '100%',
-              maxHeight: '80vh',
-              overflowY: 'auto',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
               color: 'white',
               position: 'relative',
             }}
@@ -254,13 +249,46 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
             >
               ×
             </button>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-              <img src="/info/channels4_profile (1).jpg" alt="profile" style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover' }} />
-              <h2 style={{ margin: 0, fontSize: '2rem' }}>코딩의세계</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '-100px' }}>
+              <img src="/info/channels4_profile (1).jpg" alt="profile" style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginBottom: '-25px' }} />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open('https://www.youtube.com/@creative-coding-world', '_blank', 'noopener,noreferrer');
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'white',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>코딩의세계</span>
+                <span style={{ fontSize: '0.8rem', opacity: 0.6, textDecoration: 'underline' }}>youtube.com/@creative-coding-world</span>
+              </button>
               <p style={{ margin: 0, fontSize: '1.2rem', opacity: 0.8 }}>with</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img src="/info/vacro.png" alt="Vacro" style={{ height: '40px', objectFit: 'contain' }} />
-              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open('https://3d.varco.ai/', '_blank', 'noopener,noreferrer');
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <img src="/info/vacro.png" alt="Vacro" style={{ height: '40px', objectFit: 'contain', marginBottom: '-8px' }} />
+                <span style={{ fontSize: '0.7rem', opacity: 0.6, color: 'white', textDecoration: 'underline' }}>3d.varco.ai</span>
+              </button>
             </div>
           </div>
         </div>
