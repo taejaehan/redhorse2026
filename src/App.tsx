@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-rout
 import MainPage from './pages/MainPage';
 import FortunePage from './pages/FortunePage';
 import GroupPhotoPage from './pages/GroupPhotoPage';
+import ZodiacInfoPage from './pages/ZodiacInfoPage';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ZodiacSign } from './types/fortune';
 import { fortuneData } from './data/fortuneData';
@@ -45,11 +46,13 @@ function AppRoutes() {
           <Route path="/" element={<MainPageWrapper />} />
           <Route path="/fortune/:sign" element={<FortunePageWrapper />} />
           <Route path="/group-photo" element={<GroupPhotoPage />} />
+          <Route path="/zodiac-info" element={<ZodiacInfoPage />} />
 
           {/* English routes */}
           <Route path="/en" element={<MainPageWrapper />} />
           <Route path="/en/fortune/:sign" element={<FortunePageWrapper />} />
           <Route path="/en/group-photo" element={<GroupPhotoPage />} />
+          <Route path="/en/zodiac-info" element={<ZodiacInfoPage />} />
         </Routes>
       </div>
     </LanguageProvider>

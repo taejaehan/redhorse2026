@@ -110,6 +110,29 @@ function MainPage({ onSelectZodiac }: MainPageProps) {
         <span style={{ fontSize: '20px', fontWeight: 'bold', fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>i</span>
       </button>
 
+      {/* 좌측 상단 ? 버튼 (info 아래) */}
+      <button
+        onClick={() => navigate(`${basePath}/zodiac-info`)}
+        style={{
+          position: 'fixed',
+          top: '65px',
+          left: '15px',
+          zIndex: 200,
+          background: 'rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: '50%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          cursor: 'pointer',
+        }}
+      >
+        <span style={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Georgia, serif' }}>?</span>
+      </button>
+
       {/* 언어 전환 버튼 */}
       <div
         style={{

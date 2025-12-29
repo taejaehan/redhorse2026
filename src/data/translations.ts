@@ -47,7 +47,16 @@ type TranslationKey =
   | 'headerRedHorse'
   | 'footerNewYear'
   | 'footerBlessing'
-  | 'footerWishes';
+  | 'footerWishes'
+  // Zodiac info page
+  | 'zodiacInfoTitle'
+  | 'zodiacInfoDescription'
+  | 'zodiacInfoLoadingTitle'
+  | 'zodiacInfoLoadingSubtitle'
+  | 'zodiacFortuneExplain'
+  | 'zodiacYearBorn'
+  | 'zodiacInfoHint'
+  | 'zodiacRedHorseHint';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -100,6 +109,15 @@ const translations: Record<Language, Translations> = {
     footerNewYear: '모두 새해',
     footerBlessing: '福',
     footerWishes: '많이 받으세요',
+    // Zodiac info page
+    zodiacInfoTitle: '12간지 띠 소개',
+    zodiacInfoDescription: '12간지 띠별 정보와 해당 출생년도를 알아보세요.',
+    zodiacInfoLoadingTitle: '12간지 띠',
+    zodiacInfoLoadingSubtitle: '띠별 정보를 불러오는 중...',
+    zodiacFortuneExplain: '띠별 운세란 태어난 해의 12간지 동물을 기준으로 한 해의 운세를 점치는 동양의 전통입니다. 각 띠는 고유한 성격과 특성을 가지며, 해마다 돌아오는 12간지와의 상성에 따라 운세가 달라집니다.',
+    zodiacYearBorn: '{name}띠: {years}년생',
+    zodiacInfoHint: '동물을 클릭하면 출생년도를 볼 수 있어요',
+    zodiacRedHorseHint: '붉은말을 클릭하면 띠별 운세에 대해 알 수 있어요',
   },
   en: {
     // Loading screens
@@ -149,6 +167,15 @@ const translations: Record<Language, Translations> = {
     footerNewYear: 'Happy New Year',
     footerBlessing: 'Fortune',
     footerWishes: 'to All',
+    // Zodiac info page
+    zodiacInfoTitle: '12 Chinese Zodiac Signs',
+    zodiacInfoDescription: 'Learn about the 12 zodiac signs and their birth years.',
+    zodiacInfoLoadingTitle: '12 Zodiac Signs',
+    zodiacInfoLoadingSubtitle: 'Loading zodiac information...',
+    zodiacFortuneExplain: 'Chinese zodiac fortune telling is an Eastern tradition that predicts your yearly fortune based on the animal sign of your birth year. Each sign has unique characteristics, and your fortune varies depending on its compatibility with the current year\'s zodiac.',
+    zodiacYearBorn: '{name}: Born in {years}',
+    zodiacInfoHint: 'Click an animal to see birth years',
+    zodiacRedHorseHint: 'Click the red horse to learn about zodiac fortune telling',
   },
 };
 
